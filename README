@@ -1,0 +1,24 @@
+NAME
+
+    App::Table2YAML - Convert the semantic of visual tables to YAML.
+
+VERSION
+
+    version 0.001
+
+SYNOPSIS
+
+DESCRIPTION
+
+EXAMPLES
+
+RESTRICTIONS
+
+AUTHOR
+
+    Ronaldo Ferreira de Lima aka jimmy <jimmy at gmail>.
+
+SEE ALSO
+
+    table2yaml - Command Line Interface.
+
