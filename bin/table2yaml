@@ -8,6 +8,8 @@ use Pod::Find qw(pod_where);
 use Pod::Usage;
 use App::Table2YAML::CLI;
 
+# VERSION
+
 binmode STDOUT, q(:utf8);
 
 my %opt;

@@ -5,6 +5,8 @@ use charnames q(:full);
 use English qw[-no_match_vars];
 use Moo::Role;
 
+# VERSION
+
 sub load_asciitable {...}
 
 no Moo;

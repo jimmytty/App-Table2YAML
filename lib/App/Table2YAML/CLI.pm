@@ -6,6 +6,8 @@ use English qw[-no_match_vars];
 use Moo;
 use App::Table2YAML;
 
+# VERSION
+
 has opts    => ( is => q(rw), default => sub { {}; }, );
 has errors  => ( is => q(rw), default => sub { []; }, );
 has loaders => ( is => q(rw), default => sub { {}; }, );

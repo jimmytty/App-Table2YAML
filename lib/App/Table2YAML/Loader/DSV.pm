@@ -7,6 +7,8 @@ use IO::File;
 use Moo::Role;
 use Text::CSV_XS;
 
+# VERSION
+
 sub load_dsv {
     my $self = shift;
 

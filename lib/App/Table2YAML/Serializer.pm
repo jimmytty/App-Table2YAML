@@ -6,6 +6,8 @@ use English qw[-no_match_vars];
 use Scalar::Util qw[looks_like_number];
 use Moo;
 
+# VERSION
+
 has allow_nulls => (
     is      => q(rw),
     isa     => sub { $_[0] ~~ [ 0, 1 ] },

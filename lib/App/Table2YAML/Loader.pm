@@ -14,6 +14,8 @@ with qw[
     App::Table2YAML::Loader::Texinfo
 ];
 
+# VERSION
+
 has input => (
     is  => q(rw),
     isa => sub { @_ == 1 && -e $_[0] && -s $_[0] },

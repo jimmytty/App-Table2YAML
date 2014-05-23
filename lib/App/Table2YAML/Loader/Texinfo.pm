@@ -5,8 +5,9 @@ use charnames q(:full);
 use English qw[-no_match_vars];
 use Moo::Role;
 
-sub load_texinfo {...}
+# VERSION
 
+sub load_texinfo {...}
 
 no Moo;
 __PACKAGE__->meta->make_immutable;
