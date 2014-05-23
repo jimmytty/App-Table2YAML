@@ -79,40 +79,20 @@ __END__
 
 =head1 NAME
 
-App::Table2YAML::Loader - ...
+App::Table2YAML::Loader - Load and parse files.
 
-=head1 SYNOPSIS
+=head1 METHODS
 
-=head1 DESCRIPTION
+=head2 input_type
 
-=head1 OPTIONS
+=head2 load
 
-=head1 ERRORS
+=head1 SEE ALSO
 
-=head1 DIAGNOSTICS
-
-=head1 EXAMPLES
-
-=head1 ENVIRONMENT
-
-=head1 FILES
-
-=head1 CAVEATS
-
-=head1 BUGS
-
-=head1 RESTRICTIONS
-
-=head1 NOTES
+=for Pod::Coverage BUILD
 
 =head1 AUTHOR
 
 Ronaldo Ferreira de Lima aka jimmy <jimmy at gmail>.
-
-=head1 HISTORY
-
-=head1 COPYRIGHT AND LICENSE
-
-=head1 SEE ALSO
 
 =cut

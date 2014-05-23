@@ -24,6 +24,10 @@ __END__
 
 App::Table2YAML::Loader::LaTeX - Plugin for I<LaTeX> tables.
 
+=head1 METHODS
+
+=head2 load_latex
+
 =head1 AUTHOR
 
 Ronaldo Ferreira de Lima aka jimmy <jimmy at gmail>.

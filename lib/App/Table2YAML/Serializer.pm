@@ -152,40 +152,18 @@ __END__
 
 =head1 NAME
 
-App::Table2YAML::Serializer - ...
+App::Table2YAML::Serializer - Serialize Visual Table Data Structures into YAML.
 
 =head1 SYNOPSIS
 
 =head1 DESCRIPTION
 
-=head1 OPTIONS
-
-=head1 ERRORS
-
-=head1 DIAGNOSTICS
-
-=head1 EXAMPLES
-
-=head1 ENVIRONMENT
-
-=head1 FILES
-
-=head1 CAVEATS
-
-=head1 BUGS
-
-=head1 RESTRICTIONS
-
-=head1 NOTES
-
 =head1 AUTHOR
 
+=head1 METHODS
+
+=head2 serialize
+
 Ronaldo Ferreira de Lima aka jimmy <jimmy at gmail>.
-
-=head1 HISTORY
-
-=head1 COPYRIGHT AND LICENSE
-
-=head1 SEE ALSO
 
 =cut

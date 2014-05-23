@@ -24,6 +24,10 @@ __END__
 
 App::Table2YAML::Loader::FixedWidth - Plugin for I<Fixed-Width> files.
 
+=head1 METHODS
+
+=head2 load_fixedwidth
+
 =head1 AUTHOR
 
 Ronaldo Ferreira de Lima aka jimmy <jimmy at gmail>.

@@ -68,7 +68,13 @@ App::Table2YAML - Convert the semantic of visual tables to I<YAML>.
 
 =head1 EXAMPLES
 
-=head1 RESTRICTIONS
+=head1 METHODS
+
+=head2 convert
+
+=head2 loader
+
+=head2 serializer
 
 =head1 AUTHOR
 
@@ -77,5 +83,7 @@ Ronaldo Ferreira de Lima aka jimmy <jimmy at gmail>.
 =head1 SEE ALSO
 
 B<table2yaml> - Command Line Interface.
+
+=for Pod::Coverage BUILD
 
 =cut

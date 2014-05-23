@@ -24,6 +24,10 @@ __END__
 
 App::Table2YAML::Loader::HTML - Plugin for I<HTML> tables.
 
+=head1 METHODS
+
+=head2 load_html
+
 =head1 AUTHOR
 
 Ronaldo Ferreira de Lima aka jimmy <jimmy at gmail>.

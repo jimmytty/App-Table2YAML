@@ -24,6 +24,10 @@ __END__
 
 App::Table2YAML::Loader::Texinfo - Plugin for I<Texinfo> tables.
 
+=head1 METHODS
+
+=head2 load_texinfo
+
 =head1 AUTHOR
 
 Ronaldo Ferreira de Lima aka jimmy <jimmy at gmail>.

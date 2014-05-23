@@ -197,8 +197,22 @@ App::Table2YAML::CLI - Command Line Interface functions.
 
 =head1 DESCRIPTION
 
+=head1 METHODS
+
+=head2 errors
+
+=head2 loaders
+
+=head2 opts
+
+=head2 parse_opts
+
+=head2 table2yaml
+
 =head1 AUTHOR
 
 Ronaldo Ferreira de Lima aka jimmy <jimmy at gmail>.
+
+=for Pod::Coverage BUILD
 
 =cut

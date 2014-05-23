@@ -42,6 +42,10 @@ __END__
 
 App::Table2YAML::Loader::DSV - Plugin for I<DSV> files.
 
+=head1 METHODS
+
+=head2 load_dsv
+
 =head1 AUTHOR
 
 Ronaldo Ferreira de Lima aka jimmy <jimmy at gmail>.

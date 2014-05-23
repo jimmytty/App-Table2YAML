@@ -24,6 +24,10 @@ __END__
 
 App::Table2YAML::Loader::AsciiTable - Plugin for I<ASCII> tables.
 
+=head1 METHODS
+
+=head2 load_asciitable
+
 =head1 AUTHOR
 
 Ronaldo Ferreira de Lima aka jimmy <jimmy at gmail>.
