@@ -12,7 +12,13 @@ DESCRIPTION
 
 EXAMPLES
 
-RESTRICTIONS
+METHODS
+
+ convert
+
+ loader
+
+ serializer
 
 AUTHOR
 
