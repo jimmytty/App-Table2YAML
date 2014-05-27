@@ -4,6 +4,7 @@ use common::sense;
 use charnames q(:full);
 use Carp;
 use English qw[-no_match_vars];
+use List::Util qw[first];
 use Moo;
 with qw[
     App::Table2YAML::Loader::AsciiTable
@@ -28,11 +29,11 @@ has field_separator => (
 has record_separator => (
     is  => q(rw),
     isa => sub {
-        @_ == 1 && $_[0] ~~ [
+        @_ == 1 && first { $_[0] eq $_ } (
             qq(\N{CARRIAGE RETURN}),
             qq(\N{LINE FEED}),
             qq(\N{CARRIAGE RETURN}\N{LINE FEED}),
-        ];
+        );
     },
     default => qq{\N{LINE FEED}},
 );
@@ -53,7 +54,7 @@ sub BUILD {
 sub load {
     my $self = shift;
 
-    if ( $self->input_type() ~~ [ undef, q() ] ) {
+    if ( !( defined $self->input_type() ) || $self->input_type() eq q() ) {
         croak(
             sprintf q(invalid input_type: '%s'),
             $self->input_type() // q(undef)

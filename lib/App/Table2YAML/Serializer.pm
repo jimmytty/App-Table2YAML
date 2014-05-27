@@ -4,13 +4,14 @@ use common::sense;
 use charnames q(:full);
 use English qw[-no_match_vars];
 use Scalar::Util qw[looks_like_number];
+use List::Util qw[first];
 use Moo;
 
 # VERSION
 
 has allow_nulls => (
     is      => q(rw),
-    isa     => sub { $_[0] ~~ [ 0, 1 ] },
+    isa     => sub { $_[0] == 0 || $_[0] == 1 },
     default => 1,
 );
 
@@ -112,8 +113,9 @@ sub _define_scalar_value {
         if ( $nv == 36 ) {
             $scalar_value = q(inf_or_nan);
         }
-        elsif ( $nv ~~ [ 20, 28 ] ) {
-            if ( fc($_) ~~ [qw[infinity -infinity +infinity]] ) {
+        elsif ( $nv == 20 || $nv == 28 ) {
+            if ( first { fc($value) eq $_ } qw[infinity -infinity +infinity] )
+            {
                 $scalar_value = q(string);
             }
             else { $scalar_value = q(inf_or_nan) }
@@ -121,10 +123,10 @@ sub _define_scalar_value {
         else { $scalar_value = q(numeric); }
     }
     else {
-        if ( fc($value) ~~ [qw[y true yes on n false no off]] ) {
+        if ( first { fc($value) eq $_ } qw[y true yes on n false no off] ) {
             $scalar_value = q(boolean);
         }
-        elsif ( fc($value) ~~ [qw[~ null]] ) {
+        elsif ( first { fc($value) eq $_ } qw[~ null] ) {
             $scalar_value = q(null);
         }
         elsif ($value =~ m{^[+-]?0x[0-9A-F]+$}imsx

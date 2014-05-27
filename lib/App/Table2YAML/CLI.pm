@@ -34,7 +34,8 @@ sub _get_loaders {
         local $EVAL_ERROR;
         eval { $obj->$method() };
         my $status
-            = !( $EVAL_ERROR ~~ [ undef, q() ] )
+            = defined $EVAL_ERROR
+            && $EVAL_ERROR ne q()
             && index( $EVAL_ERROR, q(Unimplemented) ) + 1
             ? 0
             : 1;
@@ -54,11 +55,11 @@ sub parse_opts {
             if ( keys %opt ) {
                 my $msg = qq('--$_' is incompatible with any other option);
                 push @{ $self->errors() }, $msg;
-				return 0;
+                return 0;
             }
             else {
                 $self->opts->{$_} = $value;
-				return 1;
+                return 1;
             }
         }
     }
@@ -66,7 +67,7 @@ sub parse_opts {
     foreach (q(allow_nulls)) {
         last unless exists $opt{$_};
         my $value = delete $opt{$_};
-        if ( $value ~~ [qw[0 1]] ) {
+        if ( $value == 0 || $value == 1 ) {
             $self->opts->{$_} = $value;
         }
         else {

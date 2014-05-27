@@ -35,7 +35,7 @@ unless ($check) {
     );
 }
 
-if ( $cli_obj->opts() ~~ { list_loaders => 1 } ) {
+if ( exists $cli_obj->opts->{list_loaders} ) {
     foreach my $loader ( sort keys %{ $cli_obj->loaders() } ) {
         my $value = $cli_obj->loaders->{$loader};
         $value = $value ? q(ok) : q(uninplemented);
