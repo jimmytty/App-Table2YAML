@@ -19,7 +19,7 @@ with qw[
 
 has input => (
     is  => q(rw),
-    isa => sub { @_ == 1 && -e $_[0] && -s $_[0] },
+    isa => sub { -e $_[0] && -r $_[0] && -f $_[0] && -s $_[0] },
 );
 has input_type => ( is => q(rw), default => q(), );
 has field_separator => (
@@ -57,7 +57,7 @@ sub load {
     if ( !( defined $self->input_type() ) || $self->input_type() eq q() ) {
         croak(
             sprintf q(invalid input_type: '%s'),
-            $self->input_type() // q(undef)
+            $self->input_type() // q(undef),
         );
     }
 

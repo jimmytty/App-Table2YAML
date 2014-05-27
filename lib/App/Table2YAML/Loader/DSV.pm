@@ -12,7 +12,11 @@ use Text::CSV_XS;
 sub load_dsv {
     my $self = shift;
 
-    my $dsv_fh = IO::File->new( $self->input(), q(r) );
+    my $ref = ref $self->input() // q();
+    my $dsv_fh
+        = $ref eq q(GLOB)
+        ? $self->input()
+        : IO::File->new( $self->input(), q(r) );
     my $csv_obj = Text::CSV_XS->new(
         {   binary         => 1,
             empty_is_undef => 1,

@@ -98,9 +98,12 @@ sub parse_opts {
     foreach (q(input)) {
         if ( exists $opt{$_} ) {
             my $value = delete $opt{$_};
-            if ( -e -f $value ) { $self->opts->{$_} = $value; }
+            if ( $value eq q(-) ) { $self->opts->{$_} = \*STDIN; }
+            elsif ( -e $value && -r $value && -f $value && -s $value ) {
+                $self->opts->{$_} = $value;
+            }
             else {
-                my $msg = qq($opt{$_} isn't accessible);
+                my $msg = qq($value isn't accessible);
                 push @{ $self->errors() }, $msg;
             }
         }
