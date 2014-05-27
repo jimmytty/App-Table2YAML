@@ -71,7 +71,7 @@ sub parse_opts {
             $self->opts->{$_} = $value;
         }
         else {
-            my $msg = qq(invalid value for '--$_': '$opt{$_}');
+            my $msg = qq(invalid value for '--$_': '$value');
             push @{ $self->errors() }, $msg;
         }
     }
@@ -83,8 +83,9 @@ sub parse_opts {
                 $self->opts->{$_} = $value;
             }
             else {
-                my $msg = qq(invalid value for '--$_': '$opt{$_}' );
+                my $msg = qq(invalid value for '--$_': '$value' );
                 push @{ $self->errors() }, $msg;
+                return 0;
             }
         }
         else {
@@ -97,9 +98,7 @@ sub parse_opts {
     foreach (q(input)) {
         if ( exists $opt{$_} ) {
             my $value = delete $opt{$_};
-            if ( -e -f $value ) {
-                $self->opts->{$_} = $value;
-            }
+            if ( -e -f $value ) { $self->opts->{$_} = $value; }
             else {
                 my $msg = qq($opt{$_} isn't accessible);
                 push @{ $self->errors() }, $msg;
