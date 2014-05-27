@@ -61,7 +61,7 @@ sub load {
         );
     }
 
-    my $loader = q(load_) . fc $self->input_type();
+    my $loader = q(load_) . lc $self->input_type();
     my @table  = $self->$loader();
 
     return @table;

@@ -6,6 +6,7 @@ use English qw[-no_match_vars];
 use Scalar::Util qw[looks_like_number];
 use List::Util qw[first];
 use Moo;
+use Unicode::CaseFold qw[case_fold];
 
 # VERSION
 
@@ -114,7 +115,8 @@ sub _define_scalar_value {
             $scalar_value = q(inf_or_nan);
         }
         elsif ( $nv == 20 || $nv == 28 ) {
-            if ( first { fc($value) eq $_ } qw[infinity -infinity +infinity] )
+            if ( first { case_fold($value) eq $_ }
+                qw[infinity -infinity +infinity] )
             {
                 $scalar_value = q(string);
             }
@@ -123,10 +125,12 @@ sub _define_scalar_value {
         else { $scalar_value = q(numeric); }
     }
     else {
-        if ( first { fc($value) eq $_ } qw[y true yes on n false no off] ) {
+        if ( first { case_fold($value) eq $_ }
+            qw[y true yes on n false no off] )
+        {
             $scalar_value = q(boolean);
         }
-        elsif ( first { fc($value) eq $_ } qw[~ null] ) {
+        elsif ( first { case_fold($value) eq $_ } qw[~ null] ) {
             $scalar_value = q(null);
         }
         elsif ($value =~ m{^[+-]?0x[0-9A-F]+$}imsx
