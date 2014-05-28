@@ -2,6 +2,7 @@ package App::Table2YAML;
 
 use common::sense;
 use charnames q(:full);
+use Carp;
 use English qw[-no_match_vars];
 use Moo;
 use App::Table2YAML::Loader;
@@ -30,7 +31,6 @@ sub BUILD {
             }
         }
     }
-    croak(q(unparsed args)) if %{$args};
 
     return 1;
 } ## end sub BUILD

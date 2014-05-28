@@ -20,11 +20,10 @@ my $result = GetOptions(
     q(--allow_nulls|n=i)      => sub { $opt{ $_[0] } = $_[1] },
     q(--field_separator|f=s)  => sub { $opt{ $_[0] } = $_[1] },
     q(--record_separator|r=s) => sub { $opt{ $_[0] } = $_[1] },
+    q(--field_offset|o=s{1,}) => sub { push @{ $opt{ $_[0] } }, $_[1]; }
 );
 
-unless ($result) {
-    pod2usage( q(-verbose) => 1 );
-}
+pod2usage( q(-verbose) => 1 ) unless $result;
 
 my $cli_obj = App::Table2YAML::CLI->new();
 my $check   = $cli_obj->parse_opts(%opt);
@@ -66,10 +65,11 @@ table2yaml - Command Line Interface for B<App::Table2YAML>.
     OPTIONS:
         [ --list_loaders     | -l ]    List valid loaders
         [ --input_type       | -t ]    Determine a loader for input
-        [ --input            | -i ]    Input filename
+        [ --input            | -i ]    Filename or STDIN
         [ --allow_nulls      | -n ]    Control output of null fields [0|1]
         [ --field_separator  | -f ]    Character field separator (DSV)
         [ --record_separator | -r ]    Lines/Records separator
+        [ --field_offset     | -o ]    Field Offset list (Fixed Width)
 
 =head1 OPTIONS
 

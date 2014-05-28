@@ -16,6 +16,10 @@ my $test_dir = catdir( dist_dir($class), q(test) );
 my %test_file;
 find( sub { $test_file{$File::Find::name}++ if -e -f }, $test_dir, );
 
+my %offset = (
+    ascii7 => [ 4, 4, 4,  25, ],
+    simple => [ 4, 7, 16, 20, 14, 18, 12, 14, 7, ],
+);
 my ( %yml, @test );
 foreach my $file ( keys %test_file ) {
     my ( $name, $dir, $suffix ) = fileparse( $file, qr{\.[^.]*$} );
@@ -43,6 +47,10 @@ foreach my $file ( keys %test_file ) {
         elsif ( $suffix eq q(.tsv) ) {
             $opt{$name}{field_separator} = qq(\t);
         }
+    }
+    elsif ( $type eq q(fixedwidth) ) {
+        $opt{$name}{record_separator} = qq(\n);
+        $opt{$name}{field_offset}     = $offset{$name};
     }
 
     push @test, {%opt};
@@ -73,7 +81,7 @@ SKIP: {
         unless ( is_deeply( $output, $yml{$name}, $testname_deep ) ) {
             die;
         }
-    } ## end SKIP:
+    }
 } ## end foreach my $test (@test)
 
 done_testing();

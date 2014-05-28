@@ -118,7 +118,8 @@ sub parse_opts {
     %opt = $self->$parse(%opt);
 
     foreach my $opt ( keys %opt ) {
-        my $msg = qq(unknown option: '$opt');
+        my $msg = sprintf q(option '--%s' is invalid for '--input_type=%s'),
+            $opt, $self->opts->{input_type};
         push @{ $self->errors() }, $msg;
     }
 
@@ -151,28 +152,68 @@ sub _parse_opts_dsv {
 
     foreach (q(record_separator)) {
         last unless exists $opt{$_};
-        my %map = (
-            q(\n)    => qq(\n),
-            q(\r)    => qq(\r),
-            q(\r\n)  => qq(\r\n),
-            qq(\n)   => qq(\n),
-            qq(\r)   => qq(\r),
-            qq(\r\n) => qq(\r\n),
-        );
         my $value = delete $opt{$_};
-        if ( exists $map{$value} ) {
-            $value = $map{$value};
-            $self->opts->{$_} = $value;
-        }
-    } ## end foreach (q(record_separator))
+        $value = $self->_parse_record_separator($value);
+        $self->opts->{$_} = $value if defined $value;
+    }
 
     return %opt;
 } ## end sub _parse_opts_dsv
 
-sub _parse_opts_fixedwidth {...}
-sub _parse_opts_html       {...}
-sub _parse_opts_latex      {...}
-sub _parse_opts_texinfo    {...}
+sub _parse_opts_fixedwidth {
+    my $self = shift;
+    my %opt  = splice @_;
+
+    foreach (q(field_offset)) {
+        if ( exists $opt{$_} ) {
+            my $values = delete $opt{$_};
+            my @value;
+            foreach my $value ( @{$values} ) {
+                push @value, split m{[\s,]+}msx, $value;
+            }
+            @value = grep { defined && $_ ne q() } @value;
+            $self->opts->{$_} = [@value];
+        }
+        else {
+            my $msg = qq('--$_' is mandatory for '--input_type=fixedwidth');
+            push @{ $self->errors() }, $msg;
+        }
+    } ## end foreach (q(field_offset))
+
+    foreach (q(record_separator)) {
+        last unless exists $opt{$_};
+        my $value = delete $opt{$_};
+        $value = $self->_parse_record_separator($value);
+        $self->opts->{$_} = $value if defined $value;
+    }
+
+    return %opt;
+} ## end sub _parse_opts_fixedwidth
+
+sub _parse_opts_html    {...}
+sub _parse_opts_latex   {...}
+sub _parse_opts_texinfo {...}
+
+sub _parse_record_separator {
+    my $self             = shift;
+    my $record_separator = shift;
+
+    return unless defined $record_separator;
+
+    my %map = (
+        q(\n)    => qq(\n),
+        q(\r)    => qq(\r),
+        q(\r\n)  => qq(\r\n),
+        qq(\n)   => qq(\n),
+        qq(\r)   => qq(\r),
+        qq(\r\n) => qq(\r\n),
+    );
+
+    $record_separator
+        = exists $map{$record_separator} ? $map{$record_separator} : ();
+
+    return $record_separator;
+} ## end sub _parse_record_separator
 
 sub table2yaml {
     my $self = shift;

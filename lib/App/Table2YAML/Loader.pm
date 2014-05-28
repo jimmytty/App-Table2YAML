@@ -37,6 +37,11 @@ has record_separator => (
     },
     default => qq{\N{LINE FEED}},
 );
+has field_offset => (
+    is      => q(rw),
+    isa     => sub { ref $_[0] eq q(ARRAY); },
+    default => sub { []; },
+);
 
 sub BUILD {
     my $self = shift;
