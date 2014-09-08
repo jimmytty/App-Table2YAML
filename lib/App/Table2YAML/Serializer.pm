@@ -3,7 +3,6 @@ package App::Table2YAML::Serializer;
 use common::sense;
 use charnames q(:full);
 use English qw[-no_match_vars];
-use Scalar::Util qw[looks_like_number];
 use List::Util qw[first];
 use Moo;
 use Unicode::CaseFold qw[case_fold];
@@ -90,11 +89,13 @@ sub _serialize_scalar_data {
 
         my $scalar_value = $self->_define_scalar_value($_);
 
+        say "$data => $scalar_value";
+
         if ( $scalar_value eq q(string) ) {
             s{"}{\\"}gmsx;
             $_ = qq("$_");
         }
-        elsif ( $scalar_value eq q(inf_or_nan) ) {
+        elsif ( first { $scalar_value eq $_ } qw[inf nan] ) {
             s{^[+-]?\K}{.}msx;
         }
 
@@ -107,43 +108,76 @@ sub _define_scalar_value {
     my $self  = shift;
     my $value = shift;
 
-    my $scalar_value;
-
-    my $nv = looks_like_number($_);
-    if ( $nv != 0 ) {
-        if ( $nv == 36 ) {
-            $scalar_value = q(inf_or_nan);
-        }
-        elsif ( $nv == 20 || $nv == 28 ) {
-            if ( first { case_fold($value) eq $_ }
-                qw[infinity -infinity +infinity] )
-            {
-                $scalar_value = q(string);
-            }
-            else { $scalar_value = q(inf_or_nan) }
-        }
-        else { $scalar_value = q(numeric); }
-    }
-    else {
-        if ( first { case_fold($value) eq $_ }
-            qw[y true yes on n false no off] )
-        {
-            $scalar_value = q(boolean);
-        }
-        elsif ( first { case_fold($value) eq $_ } qw[~ null] ) {
-            $scalar_value = q(null);
-        }
-        elsif ($value =~ m{^[+-]?0x[0-9A-F]+$}imsx
-            || $value
-            =~ m{^[+-]?(?:[0-9]{1,3})(?:_[0-9]{3})*(?:\.[0-9]+)?$}msx )
-        {
-            $scalar_value = q(numeric);
-        }
-        else { $scalar_value = q(string); }
-    } ## end else [ if ( $nv != 0 ) ]
+    my @method = grep { substr( $_, 0, 4 ) eq q(_is_) }
+        $self->meta->get_method_list();
+    my $method = first { $self->$_($value) } @method;
+    my $scalar_value = $method ? substr $method, 4 : q(string);
 
     return $scalar_value;
-} ## end sub _define_scalar_value
+}
+
+sub _is_boolean {
+    my $self  = shift;
+    my $value = shift;
+
+    my $fc = case_fold($value);
+    my $st = ( first { $fc eq $_ } qw[y true yes on n false no off] ) ? 1 : 0;
+
+    return $st;
+}
+
+sub _is_inf {
+    my $self  = shift;
+    my $value = shift;
+
+    my $fc = case_fold($value);
+    my $st = ( first { $fc eq $_ } qw[inf -inf] ) ? 1 : 0;
+
+    return $st;
+}
+
+sub _is_nan {
+    my $self  = shift;
+    my $value = shift;
+
+    my $fc = case_fold($value);
+    my $st = $fc eq q(nan);
+
+    return $st;
+}
+
+sub _is_null {
+    my $self  = shift;
+    my $value = shift;
+
+    my $st = ( first { $value eq $_ } qw[~ null] ) ? 1 : 0;
+
+    return $st;
+}
+
+sub _is_numeric {
+    my $self  = shift;
+    my $value = shift;
+
+    my $st;
+
+    foreach ($value) {
+        if (m{^[+-]?[0-9]+$}msx) {
+            $st = 1;    # {Decimal,Octal} int
+        }
+        elsif (m{^[+-]?0x[0-9A-F]+$}imsx) {
+            $st = 1;    # Hexadecimal int
+        }
+        elsif (m{^[+-]?(?:[0-9]{1,3})(?:_[0-9]{3})*(?:\.[0-9]+)?$}msx) {
+            $st = 1;    # Fixed float
+        }
+        elsif (m{^[+-]?[0-9]+(?:\.[0-9]+)?e[+-]?[0-9]+$}imsx) {
+            $st = 1;    # Exponential float
+        }
+    }
+
+    return $st;
+} ## end sub _is_numeric
 
 no Moo;
 __PACKAGE__->meta->make_immutable;
