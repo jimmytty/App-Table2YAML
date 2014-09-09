@@ -23,14 +23,14 @@ my $result = GetOptions(
     q(--field_offset|o=s{1,}) => sub { push @{ $opt{ $_[0] } }, $_[1]; }
 );
 
-pod2usage( q(-verbose) => 1 ) unless $result;
+pod2usage( -verbose => 1 ) if !($result) || !(%opt);
 
 my $cli_obj = App::Table2YAML::CLI->new();
 my $check   = $cli_obj->parse_opts(%opt);
 unless ($check) {
     pod2usage(
-        message     => join( q(\n), @{ $cli_obj->errors() } ),
-        q(-verbose) => 1,
+        message  => join( q(\n), @{ $cli_obj->errors() } ),
+        -verbose => 1,
     );
 }
 
@@ -40,7 +40,6 @@ if ( exists $cli_obj->opts->{list_loaders} ) {
         $value = $value ? q(ok) : q(uninplemented);
         say sprintf q(%s => %s), $loader, $value;
     }
-    exit;
 }
 
 my @yaml = $cli_obj->table2yaml();
