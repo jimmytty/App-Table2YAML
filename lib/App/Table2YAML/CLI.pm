@@ -24,7 +24,9 @@ sub _get_loaders {
     my $self = shift;
 
     use App::Table2YAML::Loader;
-    my $obj        = App::Table2YAML::Loader->new();
+    my $obj = App::Table2YAML::Loader->new();
+    $obj->field_separator(q());
+    $obj->record_separator(q());
     my @method     = $obj->meta->get_method_list();
     my $prefix_str = q(load_);
     my $prefix_len = length($prefix_str);
@@ -126,7 +128,19 @@ sub parse_opts {
     return @{ $self->errors() } ? 0 : 1;
 } ## end sub parse_opts
 
-sub _parse_opts_asciitable {...}
+sub _parse_opts_asciitable {
+    my $self = shift;
+    my %opt = splice @_;
+
+    foreach my $opt ( keys %opt ) {
+        next if $opt eq q(record_separator);
+        my $msg = qq(asciitable and '--$opt' are incompatible.\nIgnored.);
+        say $msg;
+        delete $opt{$opt};
+    }
+
+    return %opt;
+}
 
 sub _parse_opts_dsv {
     my $self = shift;
