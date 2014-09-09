@@ -60,7 +60,7 @@ __END__
 
 =head1 NAME
 
-App::Table2YAML - Convert the semantic of visual tables to I<YAML>.
+App::Table2YAML - Convert the semantic of visual tables into YAML.
 
 =head1 SYNOPSIS
 
