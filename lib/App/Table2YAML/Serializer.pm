@@ -89,8 +89,6 @@ sub _serialize_scalar_data {
 
         my $scalar_value = $self->_define_scalar_value($_);
 
-        say "$data => $scalar_value";
-
         if ( $scalar_value eq q(string) ) {
             s{"}{\\"}gmsx;
             $_ = qq("$_");
